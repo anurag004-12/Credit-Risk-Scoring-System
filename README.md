@@ -225,19 +225,6 @@ streamlit run frontend/app.py
 
 ---
 
-## 📈 Project Level
-
-| Category         | Level        |
-| ---------------- | ------------ |
-| Machine Learning | Advanced     |
-| Deployment       | Intermediate |
-| System Design    | Advanced     |
-| Engineering      | Professional |
-| Resume Value     | High         |
-| Placement Value  | Very High    |
-
----
-
 ## 🧑‍💼 Resume Description
 
 > Built a production-grade Credit Risk Scoring System using ML pipelines, Flask API, and Streamlit UI. Implemented preprocessing automation, feature engineering, model training, REST API integration, and end-to-end deployment-ready architecture for real-time credit risk prediction.
