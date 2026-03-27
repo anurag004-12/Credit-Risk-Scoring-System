@@ -71,7 +71,7 @@ Credit-Risk-Scoring-System/
 │   └── app.py
 │
 ├── model/                # Trained pipeline model
-│   └── credit_risk_model.joblib
+│   └── credit_risk_model.pkl
 │
 ├── data/                 # Dataset
 │
