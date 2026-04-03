@@ -21,3 +21,5 @@ Thumbs.db
 
 # Data (optional)
 data/raw/*.csv
+
+training.ipynb
