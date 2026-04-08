@@ -6,7 +6,7 @@ import os
 app = Flask(__name__)
 
 # Load full pipeline
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "model", "credit_risk_model2.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "model", "credit_risk_model3.pkl")
 model = joblib.load(MODEL_PATH)
 
 @app.route("/")

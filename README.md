@@ -8,38 +8,9 @@ A professional ML engineering project that predicts customer credit risk using a
 
 ## 🚀 Project Overview
 
-This project builds a real-world **Credit Risk Scoring System** that classifies customers into **High Risk** or **Low Risk** categories using machine learning.
+Classifies customers into **High Risk** or **Low Risk** using machine learning on the German Credit Dataset (1000 samples).
 
-The system is designed as a full production pipeline:
-
-**UI → API → ML Pipeline → Prediction → Risk Output**
-
----
-
-## 🎯 Problem Statement
-
-Financial institutions face high losses due to loan defaults. The goal is to build an intelligent system that:
-
-* Predicts default risk
-* Automates credit decision support
-* Improves approval accuracy
-* Reduces financial risk
-
----
-
-## 🧠 Solution Architecture
-
-```
-User Input (Streamlit UI)
-        ↓
-Flask REST API
-        ↓
-ML Pipeline (Preprocessing + Model)
-        ↓
-Prediction Engine
-        ↓
-Risk Classification Output
-```
+**Flow:** `UI → API → ML Pipeline → Prediction → Risk Output`
 
 ---
 
@@ -47,15 +18,14 @@ Risk Classification Output
 
 | Layer           | Technology                           |
 | --------------- | ------------------------------------ |
-| Language        | Python                               |
-| ML Framework    | Scikit-learn                         |
+| Language        | Python 3.10                          |
+| ML Framework    | Scikit-learn, XGBoost                |
 | Pipeline        | sklearn Pipeline + ColumnTransformer |
 | Backend         | Flask                                |
 | Frontend        | Streamlit                            |
 | Model Storage   | Joblib                               |
 | Data Handling   | Pandas, NumPy                        |
 | Visualization   | Matplotlib, Seaborn                  |
-| Version Control | Git + GitHub                         |
 
 ---
 
@@ -64,24 +34,45 @@ Risk Classification Output
 ```
 Credit-Risk-Scoring-System/
 │
-├── backend/              # Flask API
+├── backend/                        # Flask REST API
 │   └── app.py
 │
-├── frontend/             # Streamlit UI
+├── frontend/                       # Streamlit UI
 │   └── app.py
 │
-├── model/                # Trained pipeline model
-│   └── credit_risk_model.pkl
+├── src/                            # Reusable Python modules
+│   ├── __init__.py
+│   ├── preprocess.py               # Data loading, cleaning, feature engineering
+│   ├── pipeline.py                 # Pipeline & model builder
+│   └── evaluate.py                 # Evaluation utilities
 │
-├── data/                 # Dataset
+├── data/
+│   ├── raw/
+│   │   └── german_credit_data.csv  # Original dataset
+│   └── processed/                  # Cleaned data & train/test splits
+│       ├── cleaned_data.csv
+│       ├── X_train.csv
+│       ├── X_test.csv
+│       ├── y_train.csv
+│       └── y_test.csv
 │
-├── notebook/             # Jupyter notebooks
-│   ├── 1_data_loading.ipynb
-│   ├── 2_eda.ipynb
-│   ├── 3_data_preprocessing.ipynb
-│   ├── 4_feature_engineering.ipynb
-│   ├── 5_model_training.ipynb
-│   └── 6_pipeline_building.ipynb
+├── model/
+│   ├── credit_risk_model.pkl       # Best production model
+│   └── all_pipelines.pkl           # All trained pipelines
+│
+├── notebook/
+│   ├── 01_data_preprocessing/
+│   │   └── 01_data_preprocessing.ipynb
+│   ├── 02_eda/
+│   │   └── 02_eda.ipynb
+│   ├── 03_statistical_analysis/
+│   │   └── 03_statistical_analysis.ipynb
+│   ├── 04_feature_engineering/
+│   │   └── 04_feature_engineering.ipynb
+│   ├── 05_model_training/
+│   │   └── 05_model_training.ipynb
+│   └── 06_model_evaluation_deployment/
+│       └── 06_model_evaluation_deployment.ipynb
 │
 ├── requirements.txt
 ├── README.md
@@ -90,52 +81,28 @@ Credit-Risk-Scoring-System/
 
 ---
 
-## 🔄 ML Pipeline Flow
+## 🔄 ML Pipeline — Notebook Steps
 
-1. Data Ingestion
-2. Exploratory Data Analysis (EDA)
-3. Data Cleaning
-4. Feature Engineering
-5. Model Training
-6. Pipeline Construction
-7. Model Evaluation
-8. Model Serialization
-9. API Deployment
-10. UI Integration
+| # | Notebook | Description |
+|---|----------|-------------|
+| 01 | `01_data_preprocessing` | Load raw data, handle missing values, encode target, save cleaned CSV |
+| 02 | `02_eda` | Distributions, box plots, default rates by category, pairplot |
+| 03 | `03_statistical_analysis` | Correlation heatmap, Chi-Square test, Mann-Whitney U hypothesis test |
+| 04 | `04_feature_engineering` | Create `Credit_per_Duration`, `Age_Group`, train-test split (80/20 stratified) |
+| 05 | `05_model_training` | Build sklearn pipelines, 5-fold CV, train LR / RF / XGBoost |
+| 06 | `06_model_evaluation_deployment` | Confusion matrices, ROC curves, feature importance, save best model |
 
----
-
-## 📊 Models Implemented
-
-* Logistic Regression
-* Random Forest
-* XGBoost
-
-**Evaluation Metrics:**
-
-* Accuracy
-* ROC-AUC
-* Recall (BAD class)
-* Precision (BAD class)
-* F1-Score
-
-Final model selected using business-risk metrics.
+> Run notebooks **in order** — each step reads outputs saved by the previous step.
 
 ---
 
-## 🧱 ML Pipeline Design
+## 📊 Models
 
-```text
-Raw Input → Preprocessing Pipeline → Feature Encoding → Scaling → Model → Prediction
-```
+- Logistic Regression
+- Random Forest
+- XGBoost
 
-**Benefits:**
-
-* No manual encoding
-* No feature mismatch
-* API safe inputs
-* Production reliability
-* Deployment-ready model
+**Metrics:** Accuracy, ROC-AUC, Precision, Recall, F1-Score
 
 ---
 
@@ -143,25 +110,15 @@ Raw Input → Preprocessing Pipeline → Feature Encoding → Scaling → Model 
 
 **POST** `/predict`
 
-### Input JSON
-
 ```json
+// Input
 {
-  "Age": 35,
-  "Job": 2,
-  "Saving accounts": "little",
-  "Checking account": "moderate",
-  "Credit amount": 5000,
-  "Duration": 24,
-  "Sex": "male",
-  "Housing": "own",
-  "Purpose": "car"
+  "Age": 35, "Job": 2, "Sex": "male", "Housing": "own",
+  "Saving accounts": "little", "Checking account": "moderate",
+  "Credit amount": 5000, "Duration": 24, "Purpose": "car"
 }
-```
 
-### Output JSON
-
-```json
+// Output
 {
   "prediction": 1,
   "risk_probability": 0.78,
@@ -171,92 +128,28 @@ Raw Input → Preprocessing Pipeline → Feature Encoding → Scaling → Model 
 
 ---
 
-## 🖥️ Frontend (Streamlit)
-
-* User-friendly form
-* Real-time prediction
-* Risk classification display
-* Probability score
-* Interactive UI
-
----
-
-## ⚙️ How to Run Project
-
-### 1️⃣ Create Environment
+## ⚙️ How to Run
 
 ```bash
+# 1. Create & activate environment
 python -m venv ml_env
 ml_env\Scripts\activate
-```
 
-### 2️⃣ Install Dependencies
-
-```bash
+# 2. Install dependencies
 pip install -r requirements.txt
-```
 
-### 3️⃣ Train Model
+# 3. Run notebooks in order (01 → 06)
+jupyter notebook
 
-Run notebooks in order from `notebook/` folder
-
-### 4️⃣ Start Backend
-
-```bash
+# 4. Start backend
 python backend/app.py
-```
 
-### 5️⃣ Start Frontend
-
-```bash
+# 5. Start frontend
 streamlit run frontend/app.py
 ```
 
 ---
 
-## 🧪 Use Cases
+## 👨💻 Author
 
-* Loan approval automation
-* Credit risk assessment
-* Banking decision systems
-* FinTech platforms
-* Risk analytics
-* Financial scoring engines
-
----
-
-## 🧑‍💼 Resume Description
-
-> Built a production-grade Credit Risk Scoring System using ML pipelines, Flask API, and Streamlit UI. Implemented preprocessing automation, feature engineering, model training, REST API integration, and end-to-end deployment-ready architecture for real-time credit risk prediction.
-
----
-
-## 🚀 Future Enhancements
-
-* Dockerization
-* CI/CD pipeline
-* Cloud deployment
-* SHAP explainability
-* Risk band classification
-* Authentication
-* Monitoring system
-* Database integration
-* Model versioning
-* Drift detection
-
----
-
-## 📜 License
-
-This project is open-source and available for learning and educational purposes.
-
----
-
-## 👨‍💻 Author
-
-**Anurag Patel**
-B.Tech CSE (AI & ML)
-End-to-End ML Engineer Track
-
----
-
+**Anurag Patel** — B.Tech CSE (AI & ML)
