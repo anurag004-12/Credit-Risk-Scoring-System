@@ -2,11 +2,14 @@ from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
 import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+from src.preprocess import engineer_features
 
 app = Flask(__name__)
 
 # Load full pipeline
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "model", "credit_risk_model3.pkl")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "..", "model", "credit_risk_model.pkl")
 model = joblib.load(MODEL_PATH)
 
 @app.route("/")
@@ -22,8 +25,7 @@ def predict():
         df = pd.DataFrame([data])
 
         #  Feature engineering (same as training)
-        df["Credit_per_Duration"] = df["Credit amount"] / df["Duration"]
-        df["Age_Group"] = pd.cut(df["Age"],bins=[0, 25, 35, 50, 100],labels=['Young', 'Adult', 'Middle', 'Senior'])
+        df = engineer_features(df)
 
         # Prediction (pipeline handles everything)
         prediction = model.predict(df)[0]
@@ -39,4 +41,5 @@ def predict():
         return jsonify({"error": str(e)})
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    debug = os.environ.get("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug, use_reloader=False)

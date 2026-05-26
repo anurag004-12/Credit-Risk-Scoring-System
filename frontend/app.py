@@ -37,8 +37,9 @@ if st.button("Predict Risk"):
     }
 
     try:
+        API_URL = os.environ.get("API_URL", "http://127.0.0.1:5000")
         response = requests.post(
-            "http://127.0.0.1:5000/predict",
+            f"{API_URL}/predict",
             json=input_data
         )
 
