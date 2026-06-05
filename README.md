@@ -235,10 +235,3 @@ Streamlit opens at: `http://localhost:8501`
 **Anurag Patel** — B.Tech CSE (AI & ML)
 
 ---
-
-## ✅ Repository cleanup
-- Added `.gitignore` to exclude `ml_env/`, build artifacts, `data/processed/`, `model/`, and editor files.
-- Removed generated packaging metadata (egg-info) and other transient artifacts.
-- Updated package structure and imports to use `src.components`, `src.pipeline`, `src.logger`, `src.exception`, and `src.utils`.
-
-If you want, I can also update the notebooks and any remaining documentation examples to use the new package structure consistently.
