@@ -1,25 +1,41 @@
-# Environments
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
 ml_env/
 venv/
-env/
+ENV/
+.env/
 
-# Python cache
-__pycache__/
-*.pyc
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
 
-# Jupyter
-.ipynb_checkpoints/
-**/.ipynb_checkpoints/
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
 
+# VS Code
+.vscode/
 
-# OS files
+# System files
 .DS_Store
 Thumbs.db
 
-# Model files (optional if large)
-*.pkl
+# Data and models (do not commit large data/model files)
+data/processed/
+model/
 
-# Data (optional)
-data/raw/*.csv
+# Pytest cache
+.pytest_cache/
 
-training.ipynb
+# Logs
+logs/
+*.log
+
+# OS files
+desktop.ini
+

@@ -10,7 +10,7 @@ A professional ML engineering project that predicts customer credit risk using a
 
 Classifies customers into **High Risk** or **Low Risk** using machine learning on the German Credit Dataset (1000 samples).
 
-**Flow:** `UI → API → src/preprocess → ML Pipeline → Prediction → Risk Output`
+**Flow:** `UI → API → src.components.preprocess → ML Pipeline → Prediction → Risk Output`
 
 ---
 
@@ -41,11 +41,20 @@ Credit-Risk-Scoring-System/
 ├── frontend/                       # Streamlit UI
 │   └── app.py                      # Input form, calls Flask API
 │
-├── src/                            # Reusable Python modules
-│   ├── __init__.py
-│   ├── preprocess.py               # load_raw_data, clean_data, engineer_features
-│   ├── pipeline.py                 # build_preprocessor, get_models, build_pipeline
-│   └── evaluate.py                 # evaluate_model, select_best, summary_table
+├── src/                            # Reusable Python packages
+│   ├── components/                 # preprocessing + evaluation helpers
+│   │   ├── __init__.py
+│   │   ├── preprocess.py           # load_raw_data, clean_data, engineer_features
+│   │   └── evaluate.py             # evaluate_model, select_best, summary_table
+│   ├── pipeline/                   # pipeline implementation
+│   │   ├── __init__.py
+│   │   └── pipeline.py             # build_preprocessor, get_models, build_pipeline
+│   ├── logger/                     # logging helpers
+│   │   └── logger.py
+│   ├── exception/                  # custom exceptions
+│   │   └── exceptions.py
+│   ├── utils/                      # small helpers
+│   │   └── helpers.py
 │
 ├── data/
 │   ├── raw/
@@ -101,9 +110,9 @@ Credit-Risk-Scoring-System/
 
 | Module | Used By | Purpose |
 |--------|---------|---------|
-| `preprocess.py` | `backend/app.py` + notebooks | Feature engineering at prediction & training time |
-| `pipeline.py` | Notebooks only | Build sklearn pipelines during training |
-| `evaluate.py` | Notebooks only | Metrics, model comparison during training |
+| `src.components.preprocess` | `backend/app.py` + notebooks | Feature engineering at prediction & training time |
+| `src.pipeline.pipeline` | Notebooks only | Build sklearn pipelines during training |
+| `src.components.evaluate` | Notebooks only | Metrics, model comparison during training |
 
 ---
 
@@ -224,3 +233,12 @@ Streamlit opens at: `http://localhost:8501`
 ## 👨💻 Author
 
 **Anurag Patel** — B.Tech CSE (AI & ML)
+
+---
+
+## ✅ Repository cleanup
+- Added `.gitignore` to exclude `ml_env/`, build artifacts, `data/processed/`, `model/`, and editor files.
+- Removed generated packaging metadata (egg-info) and other transient artifacts.
+- Updated package structure and imports to use `src.components`, `src.pipeline`, `src.logger`, `src.exception`, and `src.utils`.
+
+If you want, I can also update the notebooks and any remaining documentation examples to use the new package structure consistently.
