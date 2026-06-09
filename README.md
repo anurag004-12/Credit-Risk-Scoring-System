@@ -8,9 +8,9 @@ A professional ML engineering project that predicts customer credit risk using a
 
 ## 🚀 Project Overview
 
-Classifies customers into **High Risk** or **Low Risk** using machine learning on the German Credit Dataset (1000 samples).
+Generates a credit risk score and classifies customers as **High Risk** or **Low Risk** using machine learning on the German Credit Dataset (1000 samples).
 
-**Flow:** `UI → API → src.components.preprocess → ML Pipeline → Prediction → Risk Output`
+**Flow:** `UI → API → src.components.preprocess → ML Pipeline → Prediction → Risk Score → Risk Output`
 
 ---
 
@@ -126,6 +126,8 @@ Credit-Risk-Scoring-System/
 
 **Metrics:** Accuracy, ROC-AUC, Precision, Recall, F1-Score
 
+**Risk Score:** The system returns a probability score for HIGH RISK, where higher values indicate greater credit risk.
+
 ---
 
 ## 🔌 API Endpoint
@@ -148,8 +150,10 @@ Credit-Risk-Scoring-System/
 }
 ```
 
-**risk_probability** is the probability of being HIGH RISK (0.0 = safe, 1.0 = risky).  
+**risk_probability** is the credit risk score: the probability of being HIGH RISK (0.0 = safe, 1.0 = risky).  
 Threshold: `>= 0.5` → HIGH RISK, `< 0.5` → LOW RISK.
+
+The score is produced by the trained model's prediction probability for the positive risk class and can be used directly as a risk ranking.
 
 ---
 
