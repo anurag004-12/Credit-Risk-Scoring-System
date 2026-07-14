@@ -21,19 +21,41 @@ def build_shap_explanation():
     preprocessor = model.named_steps["preprocessor"]
     transformed = preprocessor.transform(X)
     feature_names = preprocessor.get_feature_names_out().tolist()
+
+# Clean feature names for display
+    feature_names = [
+        name.replace("num__", "")
+        .replace("cat__", "")
+        .replace("_", " ")
+        .title()
+        for name in feature_names
+    ]
     explainer = get_shap_explainer()
     shap_values_raw = explainer.shap_values(transformed)
 
-    if isinstance(shap_values_raw, list):
-        values = np.asarray(shap_values_raw[1]) if len(shap_values_raw) > 1 else np.asarray(shap_values_raw[0])
-        base_value = explainer.expected_value[1] if isinstance(explainer.expected_value, list) else explainer.expected_value
+
+
+    values = np.asarray(shap_values_raw)
+
+# SHAP >= 0.46 returns (samples, features, classes)
+    if values.ndim == 3:
+        values = values[:, :, 1]          # Keep only HIGH RISK class
+        base_value = explainer.expected_value[1]
     else:
-        values = np.asarray(shap_values_raw)
         base_value = explainer.expected_value
+
+    print("Values shape:", values.shape)
+    print("Values ndim:", values.ndim)
+
+# If SHAP returned 3 dimensions, print their meaning
+    if values.ndim == 3:
+        print("Dimension 0 (samples):", values.shape[0])
+        print("Dimension 1:", values.shape[1])
+        print("Dimension 2:", values.shape[2])
 
     explanation = shap.Explanation(
         values=values,
-        base_values=base_value,
+        base_values=np.repeat(base_value, values.shape[0]),
         data=transformed,
         feature_names=feature_names,
     )
@@ -90,16 +112,17 @@ def plot_shap_waterfall(explanation):
 
 def plot_shap_summary(values, transformed, feature_names):
     import matplotlib.pyplot as plt
-    import numpy as _np
-
-    # values may be shape (n_samples, n_features) or (n_samples, n_outputs, n_features)
-    vals = _np.asarray(values)
-    if vals.ndim == 3:
-        # select last output by default
-        vals = vals[:, vals.shape[1] - 1, :]
 
     plt.close("all")
-    shap.summary_plot(vals, transformed, feature_names=feature_names, plot_type="bar", show=False)
+
+    shap.summary_plot(
+        values,
+        transformed,
+        feature_names=feature_names,
+        plot_type="bar",
+        show=False,
+    )
+
     fig = plt.gcf()
     return fig
 
