@@ -27,7 +27,6 @@ Thumbs.db
 
 # Data and models (do not commit large data/model files)
 data/processed/
-model/
 
 # Pytest cache
 .pytest_cache/
