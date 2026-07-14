@@ -1,76 +1,140 @@
 # 💳 Credit Risk Scoring System
 
-A production-ready Streamlit application for predicting whether a customer is low risk or high risk using a trained XGBoost pipeline.
+An end-to-end credit risk scoring solution that predicts whether a customer is likely to be a low-risk or high-risk borrower. The project combines data preprocessing, feature engineering, model training, statistical validation, explainability, and a production-style Streamlit dashboard.
 
-## Features
+## 🌐 Live Demo
 
-- Modern multi-page Streamlit UI for portfolio use
-- Dataset dashboard with interactive Altair charts
-- Risk prediction form with engineered features
-- SHAP-based explainability for model decisions
-- Model performance dashboard with metrics and visualisations
+https://credit-risk-scoring-system-mjogvcpssqcqqmgr6kgzru.streamlit.app
 
-## Run locally
+---
 
-```bash
-python -m pip install -r requirements.txt
-streamlit run app.py
-```
+## 🎯 Problem Definition
 
-## Project structure
+Credit risk assessment is critical for banks and financial institutions because poor credit decisions can lead to defaults, financial losses, and unstable lending portfolios. The goal of this system is to:
+
+- classify applicants into risk categories,
+- identify the most influential factors driving the prediction,
+- provide transparent and interpretable outputs for business stakeholders.
+
+---
+
+## ✅ Solution Overview
+
+This project builds a complete machine learning workflow for credit scoring:
+
+- loads and cleans the German credit dataset,
+- engineers meaningful features such as credit-per-duration and age groups,
+- trains and evaluates multiple classifiers,
+- selects the best-performing model for deployment,
+- exposes the solution through an interactive Streamlit application.
+
+The deployed app supports:
+
+- dataset exploration and visualization,
+- customer risk prediction,
+- SHAP-based explainability,
+- model performance monitoring with ROC curves and feature importance plots.
+
+---
+
+## 🔧 Methods Used
+
+### 1. Data Preparation
+- Data cleaning and preprocessing
+- Handling missing values and categorical encoding
+- Feature engineering for better predictive signal
+
+### 2. Exploratory Data Analysis (EDA)
+- Distribution analysis
+- Risk class analysis
+- Relationship studies between features and default risk
+
+### 3. Modeling
+- Comparison of multiple classification models
+- Best model selected as Random Forest for deployment
+- Pipeline-based training for reproducibility
+
+### 4. Evaluation Metrics
+- Accuracy
+- ROC-AUC
+- Confusion matrix
+- Classification report
+
+### 5. Statistical Testing
+- Mann–Whitney U test for comparing feature distributions between risk groups
+- Used to validate whether certain predictors differ meaningfully across good and bad credit classes
+
+### 6. Cross-Validation
+- Cross-validation used to assess model robustness and generalization
+- Helps reduce overfitting and supports model selection
+
+### 7. Explainability
+- SHAP values for local and global model interpretation
+- Supports transparent business decision-making
+
+---
+
+## 📊 Project Structure
 
 ```text
 Credit-Risk-Scoring-System/
 ├── app.py
 ├── pages/
-│   ├── home.py
-│   ├── dashboard.py
-│   ├── prediction.py
-│   ├── shap_page.py
-│   └── performance.py
-├── model/
-│   └── credit_risk_model.pkl
-├── data/
-│   └── raw/german_credit_data.csv
 ├── src/
-│   └── app_utils.py
+│   └── credit_risk/
+├── model/
+├── data/
+├── notebook/
 ├── requirements.txt
-├── setup.py
+├── pyproject.toml
 └── README.md
 ```
 
+---
+
+## ▶️ Run Locally
+
+### Create and activate a virtual environment
+
 ```powershell
-# Activate your own virtual environment, not the committed environment folder.
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+```
+
+### Install dependencies
+
+```powershell
 python -m pip install -r requirements.txt
+```
+
+### Start the app
+
+```powershell
 streamlit run app.py
 ```
 
-Streamlit opens at: `http://localhost:8501`
-
 ---
 
-## Run tests
+## 🧪 Run Tests
 
 ```bash
 python -m pytest
 ```
 
-## CI
+---
 
-A GitHub Actions workflow is included at `.github/workflows/ci.yml` to install dependencies and run the test suite on push and pull requests.
+## 🚀 Deployment Notes
+
+This project is designed for Streamlit-based deployment and can be hosted on:
+
+- Streamlit Community Cloud
+- Azure App Service
+- AWS EC2
+- Docker container
 
 ---
 
-## Notes
-
-- `ml_env/` is a local virtual environment and should not be committed to the repository.
-- The app uses `src/app_utils.py` for shared loading and helper utilities.
-
----
-
-## 👨💻 Author
+## 👨‍💻 Author
 
 **Anurag Patel** — B.Tech CSE (AI & ML)
 
